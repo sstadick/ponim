@@ -1,0 +1,16 @@
+[[package]]
+category = "main"
+description = "Compile Nim extensions for Python when imported!"
+name = "nimporter"
+optional = false
+python-versions = "*"
+version = "0.1.5"
+
+[metadata]
+content-hash = "6d7a516f4f651626256a47939907a52101c625f930f3ecb789ee3bc4692bc2d7"
+python-versions = "^3.7"
+
+[metadata.files]
+nimporter = [
+    {file = "nimporter-0.1.5.tar.gz", hash = "sha256:f0fa687d4ba1f54df538389a143b545bc8ce3e5c0a9ef7e92ebc27266b56c6e4"},
+]
