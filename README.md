@@ -1,5 +1,4 @@
-<img src="./_nim.png" width="300" height="250"/>
-<img src="./_python.png" width="250" height="250"/>
+<img src="./_nim.png" width="300" height="250"/><img src="./_python.png" width="250" height="250"/>
 
 # Nim + Python + Poetry = :)
 
