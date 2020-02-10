@@ -142,3 +142,9 @@ Happy Hacking!
 
 Blog version of this article:
 http://ducktape.blot.im/nim-python-poetry-nbsp
+
+
+### Notes
+
+- Rust / Python packaging tool https://docs.rs/maturin/0.7.7/maturin/
+- Rust / Python packaging tool https://github.com/getsentry/milksnake
