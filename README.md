@@ -21,7 +21,7 @@ Both nimpy and nimporter have excellent docs. This guide is just walking through
 
 ## This is a Hack
 
-But it kind of works... and Python packaging is basically all one giant gross hack, so maybe this isn't so bd?
+But it kind of works... and Python packaging is basically all one giant gross hack, so maybe this isn't so bad?
 
 ## Begin Hack
 
