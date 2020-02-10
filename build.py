@@ -1,32 +1,35 @@
-from os import listdir
-from os.path import join
+from os import listdir, mkdir
+from os.path import join, expanduser
 from setuptools import Extension
-import sys
-
-"""
-rm -rf nim_build
-mkdir nim_build
-nim compileToC --compileOnly -d:release -d:ssl --app:lib --opt:speed --gc:markAndSweep --nimcache:./nim_build --out:adder.so nim/adder.nim
-
-cp  ~/.choosenim/toolchains/nim-1.0.4/lib/nimbase.h ./nim_build/nimbase.h
-
-rm  ./nim_build/adder.json
-"""
-
-from os.path import expanduser
-from os import mkdir
 from shutil import copyfile, rmtree
 import subprocess
+import sys
 
 
-def nimblize(nimbase, modules):
-    """Take a list of dicsts of names and paths"""
-    print(listdir("."), file=sys.stderr)
+def nimpyize(nimbase, modules):
+    """Take a list of dicts of names and paths:
+    [
+        {'name': 'adder', 'path': 'ponim/nim/adder.nim'},
+    ]
+
+    Additionally, you must pass in the path to 'nimbase.h' so it can be copied in.
+
+    If you want your namespace to coexist with your pthon code, name this ponim.nim
+    and then your import will look like `from ponim.nim import adder` and
+    `from ponim import subtractor`. There must be a way to smooth that out in the
+    __init__.py file somehow.
+
+    Note that the file must be in the included source code dir. Currently it is
+    easiest to just put this in with your python code.
+
+    This builds a set of Extenstions, which are then passed back to setuptools.
+    """
     extensions = []
+    # Create a top level working dir
     rmtree("nim_build", ignore_errors=True)
     mkdir("nim_build")
     for module in modules:
-        module_dir = f"nim_build/{module['name']}_build"
+        module_dir = join("nim_build", f"{module['name']}_build")
         rmtree(module_dir, ignore_errors=True)
         mkdir(module_dir)
         subprocess.run(
@@ -40,14 +43,13 @@ def nimblize(nimbase, modules):
                 "--opt:speed",
                 "--gc:markAndSweep",
                 f"--nimcache:{module_dir}",
-                f"--out:{module_dir}/{module['name']}.so",
                 module["path"],
             ],
             check=True,
             stderr=sys.stdout.buffer,
         )
         copyfile(
-            nimbase, f"{module_dir}/nimbase.h",
+            nimbase, join(module_dir, "nimbase.h"),
         )
         sources = []
         for c_source_file in listdir(module_dir):
@@ -67,7 +69,7 @@ def nimblize(nimbase, modules):
                     "-fsingle-precision-constant",
                 ],
                 extra_link_args=["-s"],
-                include_dirs=[module_dir],  # expand that path?
+                include_dirs=[module_dir],  
             )
         )
     return extensions
@@ -78,7 +80,7 @@ def build(setup_kwargs):
     nimbase = expanduser("~") + "/.choosenim/toolchains/nim-1.0.4/lib/nimbase.h"
     setup_kwargs.update(
         {
-            "ext_modules": nimblize(
+            "ext_modules": nimpyize(
                 nimbase, [{"name": "adder", "path": "ponim/nim/adder.nim"}]
             ),
         }
