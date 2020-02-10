@@ -19,6 +19,25 @@ You will need to install Nim, Poetry, and Nimpy. Nim and poetry include very goo
 
 Both nimpy and nimporter have excellent docs. This guide is just walking through how to hook nimporter in with poetry, not the details of nimpy, nimporter, or poetry.
 
+## End structure
+
+```bash
+.
+├── LICENSE
+├── README.md
+├── poetry.lock
+├── ponim
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-37.pyc
+│   │   ├── adder.nim.hash
+│   │   ├── adder.so
+│   │   └── subtractor.cpython-37.pyc
+│   ├── adder.nim
+│   └── subtractor.py
+└── pyproject.toml
+```
+
 ## This is a Hack
 
 But it kind of works... and Python packaging is basically all one giant gross hack, so maybe this isn't so bad?
@@ -120,3 +139,6 @@ There is the overhead of the nim code compiling on the first run. If you actuall
 So why go through all this trouble? Nim is way nicer to work with than Cython, and offers the same or better performance. There are a few wrinkles yet to be smoothed out, but this setup could easily be used with docker to deploy a python + nim application. With all the exiting things going on in Nim, like optional move semantics for performance, and the concurrency work, having this easy of an interop is amazing.
 
 Happy Hacking!
+
+Blog version of this article:
+http://ducktape.blot.im/nim-python-poetry-nbsp
